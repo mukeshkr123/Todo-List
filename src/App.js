@@ -7,7 +7,6 @@ function App() {
 
   const addTask = () => {
     setTodoList([...todoList, currentTask]);
-    console.log(todoList);
   };
 
   return (
@@ -22,6 +21,11 @@ function App() {
       />
       <button onClick={addTask}>Add Tak</button>
       <hr />
+      <ul>
+        {todoList.map((value, index) => {
+          return <li key={index}>{value}</li>;
+        })}
+      </ul>
     </div>
   );
 }
