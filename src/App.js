@@ -9,7 +9,7 @@ function App() {
 
   const addTask = () => {
     if (currentTask.trim("").length === 0) return;
-    setTodoList([...todoList, { task: currentTask, completed: false }]);
+    setTodoList([{ task: currentTask, completed: false }, ...todoList]);
     inputTask.current.value = "";
     setCurrentTask("");
   };
@@ -33,6 +33,9 @@ function App() {
     <div className="App">
       <h1>Todo List</h1>
       <input
+        onKeyDown={(event) => {
+          if (event.keyCode == 13) addTask();
+        }}
         ref={inputTask}
         type="text"
         placeholder="Task..."
