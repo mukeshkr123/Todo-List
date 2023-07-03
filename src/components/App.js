@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import "./App.css";
+import "../App.css";
+import List from "./list";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -8,7 +9,7 @@ function App() {
   const inputTask = useRef(null);
 
   const addTask = () => {
-    if (currentTask.trim("").length === 0) return;
+    if (currentTask.trim("").length === 0) return alert("Please Enter a Task");
     setTodoList([{ task: currentTask, completed: false }, ...todoList]);
     inputTask.current.value = "";
     setCurrentTask("");
@@ -34,7 +35,7 @@ function App() {
       <h1>Todo List</h1>
       <input
         onKeyDown={(event) => {
-          if (event.keyCode == 13) addTask();
+          if (event.keyCode === 13) addTask();
         }}
         ref={inputTask}
         type="text"
@@ -48,19 +49,12 @@ function App() {
       <ul>
         {todoList.map((value, index) => {
           return (
-            <div key={index} className="task">
-              <li>{value.task}</li>
-              <button onClick={() => completedTask(value.task)}>
-                {" "}
-                Completed
-              </button>
-              <button onClick={() => deleteTask(value.task)}> Delete</button>
-              {value.completed ? (
-                <h1>Task Completed</h1>
-              ) : (
-                <h1>Task Not Completed</h1>
-              )}
-            </div>
+            <List
+              value={value}
+              index={index}
+              deleteTask={deleteTask}
+              completedTask={completedTask}
+            />
           );
         })}
       </ul>
