@@ -9,13 +9,23 @@ function App() {
 
   const addTask = () => {
     if (currentTask.trim("").length === 0) return;
-    setTodoList([...todoList, currentTask]);
+    setTodoList([...todoList, { task: currentTask, completed: false }]);
     inputTask.current.value = "";
     setCurrentTask("");
   };
 
   const deleteTask = (value) => {
-    const updatedList = todoList.filter((task) => task !== value);
+    const updatedList = todoList.filter((task) => task.task !== value);
+    setTodoList(updatedList);
+  };
+
+  const completedTask = (taskToComplete) => {
+    const updatedList = todoList.map((task) => {
+      if (task.task === taskToComplete) {
+        return { ...task, completed: true };
+      }
+      return task;
+    });
     setTodoList(updatedList);
   };
 
@@ -35,9 +45,18 @@ function App() {
       <ul>
         {todoList.map((value, index) => {
           return (
-            <div className="task">
-              <li key={index}>{value}</li>
-              <button onClick={() => deleteTask(value)}> Delete</button>
+            <div key={index} className="task">
+              <li>{value.task}</li>
+              <button onClick={() => completedTask(value.task)}>
+                {" "}
+                Completed
+              </button>
+              <button onClick={() => deleteTask(value.task)}> Delete</button>
+              {value.completed ? (
+                <h1>Task Completed</h1>
+              ) : (
+                <h1>Task Not Completed</h1>
+              )}
             </div>
           );
         })}
